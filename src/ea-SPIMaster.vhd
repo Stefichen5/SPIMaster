@@ -24,7 +24,7 @@ entity SPIMaster is
 		iDataToSend : in std_ulogic_vector(cWordLen-1 downto 0);
 		iGo : in std_ulogic;
 		
-		oDone : out std_ulogic;
+		oCanAcceptData : out std_ulogic;
 		
 		oMOSI : out std_ulogic;
 		oSPIClk : out std_ulogic;
@@ -59,13 +59,13 @@ begin
 		stateNext <= state;
 		dataNext <= data;
 		
-		dataNext.Done <= '0';
+		dataNext.CanAcceptData <= '0';
 		
 		case state is
 			--In the idle state we accept data
 			when sIdle =>
 				dataNext.data <= iDataToSend; --data to send
-				dataNext.Done <= '1'; --signal that we are ready for new data
+				dataNext.CanAcceptData <= '1'; --signal that we are ready for new data
 
 				/*when we receive the GO-Signal, we are ready to start the transmit*/
 				if (iGo) then
@@ -125,17 +125,15 @@ begin
 				stateNext <= sWaitForGoLow;
 			--In this state we wait until the GO-Bit was reset
 			when sWaitForGoLow =>
-				-- signal that we are done
 				-- the user can now reset low
 				-- as well as send new data
-				dataNext.Done <= '1';
 				if(NOT iGo) then
 					stateNext <= sIdle;
 				end if;
 		end case;
 	end process;
 
-	oDone <= data.Done;
+	oCanAcceptData <= data.CanAcceptData;
 
 	oMOSI <= data.MOSI;
 	oSPIClk <= data.SPIClk;

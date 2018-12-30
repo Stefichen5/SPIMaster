@@ -36,7 +36,7 @@ begin
 -- we don't use the switch for now
 --			iGo         => synced(0),
 			iGo         => '1',
-			oDone       => LEDR(8),
+			oCanAcceptData => LEDR(8),
 			oMOSI       => oSPIMOSI,
 			oSPIClk     => oSPIClk,
 			onCS        => onSS

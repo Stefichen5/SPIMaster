@@ -19,7 +19,7 @@ architecture Bhv of tbSPIMaster is
 	signal iClk, inRstAsync : std_ulogic := '0';
 	
 	signal iDataToSend : std_ulogic_vector(7 downto 0);
-	signal iGo, oDone, oMOSI, oSPIClk, onCS : std_ulogic;
+	signal iGo, oCanAcceptData, oMOSI, oSPIClk, onCS : std_ulogic;
 begin
 	UUT: entity work.SPIMaster
 		port map(
@@ -27,7 +27,7 @@ begin
 			inRstAsync  => inRstAsync,
 			iDataToSend => iDataToSend,
 			iGo         => iGo,
-			oDone       => oDone,
+			oCanAcceptData => oCanAcceptData,
 			oMOSI       => oMOSI,
 			oSPIClk     => oSPIClk,
 			onCS        => onCS
@@ -42,7 +42,7 @@ begin
 		wait until iClk;
 		--Assert starting conditions
 		assert oMOSI = '0' report "oMOSI has a wrong value: " severity failure;
-		assert oDone = '0' report "oDone has a wrong value" severity failure;
+		assert oCanAcceptData = '0' report "oDone has a wrong value" severity failure;
 		assert onCS = '1' report "oCS has a wrong value" severity failure;
 		wait for 13 ns;
 		
@@ -51,7 +51,7 @@ begin
 		wait until iClk;
 		wait for 1 ps;
 		assert oMOSI = '0' report "oMOSI has a wrong value: " severity failure;
-		assert oDone = '1' report "oDone has a wrong value" severity failure;
+		assert oCanAcceptData = '1' report "oDone has a wrong value" severity failure;
 		assert onCS = '1' report "oCS has a wrong value" severity failure;
 		
 		iDataToSend <= "10101010";
@@ -60,57 +60,57 @@ begin
 		--Check 'HIGH (7)
 		wait until oSPIClk;
 		assert oMOSI = '1' report "oMOSI has a wrong value: " severity failure;
-		assert oDone = '0' report "oDone has a wrong value" severity failure;
+		assert oCanAcceptData = '0' report "oDone has a wrong value" severity failure;
 		assert onCS = '0' report "oCS has a wrong value" severity failure;
 		
 		--Check (6)
 		wait until oSPIClk;
 		assert oMOSI = '0' report "oMOSI has a wrong value: " severity failure;
-		assert oDone = '0' report "oDone has a wrong value" severity failure;
+		assert oCanAcceptData = '0' report "oDone has a wrong value" severity failure;
 		assert onCS = '0' report "oCS has a wrong value" severity failure;
 		
 		--Check (5)
 		wait until oSPIClk;
 		assert oMOSI = '1' report "oMOSI has a wrong value: " severity failure;
-		assert oDone = '0' report "oDone has a wrong value" severity failure;
+		assert oCanAcceptData = '0' report "oDone has a wrong value" severity failure;
 		assert onCS = '0' report "oCS has a wrong value" severity failure;
 		
 		--Check (4)
 		wait until oSPIClk;
 		assert oMOSI = '0' report "oMOSI has a wrong value: " severity failure;
-		assert oDone = '0' report "oDone has a wrong value" severity failure;
+		assert oCanAcceptData = '0' report "oDone has a wrong value" severity failure;
 		assert onCS = '0' report "oCS has a wrong value" severity failure;
 		
 		--Check (3)
 		wait until oSPIClk;
 		assert oMOSI = '1' report "oMOSI has a wrong value: " severity failure;
-		assert oDone = '0' report "oDone has a wrong value" severity failure;
+		assert oCanAcceptData = '0' report "oDone has a wrong value" severity failure;
 		assert onCS = '0' report "oCS has a wrong value" severity failure;
 		
 		--Check (2)
 		wait until oSPIClk;
 		assert oMOSI = '0' report "oMOSI has a wrong value: " severity failure;
-		assert oDone = '0' report "oDone has a wrong value" severity failure;
+		assert oCanAcceptData = '0' report "oDone has a wrong value" severity failure;
 		assert onCS = '0' report "oCS has a wrong value" severity failure;
 		
 		--Check (1)
 		wait until oSPIClk;
 		assert oMOSI = '1' report "oMOSI has a wrong value: " severity failure;
-		assert oDone = '0' report "oDone has a wrong value" severity failure;
+		assert oCanAcceptData = '0' report "oDone has a wrong value" severity failure;
 		assert onCS = '0' report "oCS has a wrong value" severity failure;
 		
 		--Check (0)
 		wait until oSPIClk;
 		assert oMOSI = '0' report "oMOSI has a wrong value: " severity failure;
-		assert oDone = '0' report "oDone has a wrong value" severity failure;
+		assert oCanAcceptData = '0' report "oDone has a wrong value" severity failure;
 		assert onCS = '0' report "oCS has a wrong value" severity failure;
 		
 		iGo <= '0';
 		
 		--Check end
-		wait until oDONE'EVENT;
+		wait until oCanAcceptData'EVENT;
 		assert oMOSI = '0' report "oMOSI has a wrong value: " severity failure;
-		assert oDone = '1' report "oDone has a wrong value" severity failure;
+		assert oCanAcceptData = '1' report "oDone has a wrong value" severity failure;
 		assert onCS = '1' report "oCS has a wrong value" severity failure;
 		stop;
 	end process;

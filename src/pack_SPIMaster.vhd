@@ -20,7 +20,7 @@ package pack_SPIMaster is
 		data : std_ulogic_vector(cWordLen-1 downto 0);
 		index : aIndexVal;
 
-		done : std_ulogic;
+		CanAcceptData : std_ulogic;
 
 		Counter : natural;
 
@@ -33,7 +33,7 @@ package pack_SPIMaster is
 		data => (others=>'0'),
 		index => cWordLen-1, --MSB
 		
-		done => '0',
+		CanAcceptData => '0',
 		
 		Counter => 0,
 		
