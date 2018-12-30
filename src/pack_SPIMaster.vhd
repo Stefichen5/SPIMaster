@@ -10,7 +10,8 @@ use ieee.numeric_std.all;
 
 package pack_SPIMaster is
 	constant cWordLen : natural := 8;
-	constant cMaxCnt : natural := 100;
+--	constant cMaxCnt : natural := 100;
+	constant cMaxCnt : natural := 1;
 
 	type astate_type is (sIdle, sSetnCS, sClkHigh, sSendBit, sClkLow, sResnCS, sWaitForGoLow);
 	

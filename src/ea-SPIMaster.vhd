@@ -114,6 +114,7 @@ begin
 					if(data.index=-1) then
 						--end of word reached. wait for new word
 						dataNext.MOSI <= '0';
+						dataNext.index <= cWordLen-1;
 						stateNext <= sResnCS;			
 					else
 						stateNext <= sSendBit;
